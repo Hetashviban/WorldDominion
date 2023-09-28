@@ -3,6 +3,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WorldDominion.Models
 {
+ 
+    public enum ProductWeightUnit
+    {
+        GRAMS,
+        KILOGRAMS, 
+        POUNDS, 
+        OUNCES,
+        UNITS,
+        LITERS,
+    }
+
     //The name of the class should always begin with capital letter - that's the naming convention
     public class Product
     {
@@ -34,7 +45,13 @@ namespace WorldDominion.Models
         [DataType(DataType.Currency)] //This data annotation makes sure that we are storing as a currency 
         public decimal MSRP { get; set;} = 0.01M;//pre define as 1 cent
         //MSRP - Manufactured suggested retail price
-        //M stand's for Mary's suggested retail price
+
+        [Required]
+        [Range(0.01, 999999.99)]
+        public decimal Weight { get; set;} = 0.01M;
+
+        [Required]
+        public ProductWeightUnit WeightUnit { get; set;} = ProductWeightUnit.UNITS; //We are presetting the unit/value here
 
 
         //This is going to be one to many relationship 
