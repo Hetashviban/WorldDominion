@@ -30,6 +30,6 @@ namespace WorldDominion.Models
 
 
         //relationship with Products and place to store products in the department instance
-        public virtual ICollection<Product>? Products { get; set;}//This will state that the product table is a child and will allow us to retrieve a department from the database and automatically load the department record/instance object up with products.
+        public virtual ICollection<Product> Products { get; set;} = new List<Product>();//This will state that the product table is a child and will allow us to retrieve a department from the database and automatically load the department record/instance object up with products.
     }
 }
