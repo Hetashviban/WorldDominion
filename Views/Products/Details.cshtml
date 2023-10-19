@@ -43,6 +43,13 @@
     </dl>
 </div>
 <div>
+
+    <form asp-controller="Carts" asp-action="AddToCart">
+        <input type="hidden" name="productId" value="@Model.Id">
+        <input type="number" name="quantity" value="1" step="1" min="1" max="999999">
+        <input type="submit" value="Add to Cart" class="btn btn-success">
+    </form>
+    
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

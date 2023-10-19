@@ -1,0 +1,42 @@
+@model WorldDominion.Models.Cart
+
+@{
+    ViewData["Title"] = "View my Cart";    
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (Model.CartItems != null)
+{
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach(var cartItem in Model.CartItems)
+            {
+                <tr>
+                    <td>@cartItem.Product.Name</td>
+                    <td>@cartItem.Quantity</td>
+                    <td>@cartItem.Product.MSRP</td>
+                    <td>@((decimal)(cartItem.Quantity * cartItem.Product.MSRP))</td>
+                </tr>
+            }
+        </tbody>
+
+        <tfoot>
+            <tr>
+                <th>Total</th>
+                <td colspan="3">
+                    @(Model.CartItems.Sum(cartItem => (decimal)(cartItem.Quantity * cartItem.Product.MSRP)))
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+}

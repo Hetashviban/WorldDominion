@@ -4,6 +4,17 @@ using WorldDominion.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Add session
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(30); //This session will only last 30 minutes
+    //We can also set it for hours
+    //Session : Their cart information will last for the time mentioned above.
+    //If the user closes the browser, the session will die 
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -16,6 +27,9 @@ var connectionString = builder.Configuration.GetConnectionString("Default") ?? t
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySQL(connectionString));
 
 var app = builder.Build();
+
+//Enable sessions on our requests
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
