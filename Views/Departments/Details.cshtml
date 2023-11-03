@@ -28,6 +28,10 @@
 <partial name="~/Views/Shared/Products/_ProductsTablePartial.cshtml" model="Model.Products" />
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    @if(User.IsInRole("Admin"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> 
+        <span>&nbsp; | &nbsp;</span>
+        <a asp-action="Index">Back to List</a>
+    }
 </div>

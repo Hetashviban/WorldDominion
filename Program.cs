@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using WorldDominion.Models;
@@ -5,7 +6,8 @@ using WorldDominion.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 //Add session
-builder.Services.AddSession(options => {
+builder.Services.AddSession(options =>
+{
     options.IdleTimeout = TimeSpan.FromMinutes(30); //This session will only last 30 minutes
     //We can also set it for hours
     //Session : Their cart information will last for the time mentioned above.
@@ -26,6 +28,13 @@ var connectionString = builder.Configuration.GetConnectionString("Default") ?? t
 
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseMySQL(connectionString));
 
+builder.Services.AddDefaultIdentity<IdentityUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Registering the DbInitializer seeder
+builder.Services.AddTransient<DbInitializer>();
+
 var app = builder.Build();
 
 //Enable sessions on our requests
@@ -44,10 +53,22 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapRazorPages();
+
+// Seed roles
+var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using var scope = scopeFactory.CreateScope();
+var initializer = scope.ServiceProvider.GetRequiredService<DbInitializer>();
+await DbInitializer.Initialize(
+    scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>(),
+    scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>()
+);
 
 app.Run();
