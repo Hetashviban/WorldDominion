@@ -15,6 +15,7 @@
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Subtotal</th>
+                <th>Actions</th>
             </tr>
         </thead>
 
@@ -25,7 +26,15 @@
                     <td>@cartItem.Product.Name</td>
                     <td>@cartItem.Quantity</td>
                     <td>@cartItem.Product.MSRP</td>
-                    <td>@((decimal)(cartItem.Quantity * cartItem.Product.MSRP))</td>
+                    <td>
+                        @((decimal)(cartItem.Quantity * cartItem.Product.MSRP))
+                    </td>
+                    <td>
+                        <form asp-action="RemoveFromCart">
+                            <input type="hidden" name="productId" asp-for="@cartItem.ProductId"/>
+                            <input type="submit" value="Remove" class="btn btn-danger">
+                        </form>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -33,10 +42,19 @@
         <tfoot>
             <tr>
                 <th>Total</th>
-                <td colspan="3">
+                <td colspan="4">
                     @(Model.CartItems.Sum(cartItem => (decimal)(cartItem.Quantity * cartItem.Product.MSRP)))
                 </td>
             </tr>
         </tfoot>
     </table>
+}
+
+<!--Added the checkout button
+The button will only be visible if there are any items in the cart-->
+@if (Model.CartItems.Count > 0)
+{
+    <a class="btn btn-success" asp-controller="Orders" asp-action="Checkout">
+        Checkout
+    </a>
 }

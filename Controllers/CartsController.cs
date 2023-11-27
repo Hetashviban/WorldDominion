@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Newtonsoft.Json;
 using WorldDominion.Models;
+using WorldDominion.Services;
 
 
 //There is no point of doing async for in - memory stuff
@@ -10,20 +10,21 @@ namespace WorldDominion.Controllers
 {
     public class CartsController : Controller
     {
-        private readonly string _cartSessionKey;
-        private readonly ApplicationDbContext _context;
 
-        public CartsController(ApplicationDbContext context)
+        private readonly ApplicationDbContext _context;
+        private readonly CartService _cartService;
+
+        public CartsController(CartService cartService, ApplicationDbContext context)
         {
-            _cartSessionKey = "Cart";
             _context = context;
+            _cartService = cartService;
         }
 
         //This Async function displays the cart
         public async Task<IActionResult> Index()
         {
             //Get our cart (or get a new cart if it doesn't exist)
-            var cart = GetCart();
+            var cart = _cartService.GetCart();
 
             if (cart == null)
             {
@@ -45,7 +46,7 @@ namespace WorldDominion.Controllers
                     .Include(p => p.Department)
                     .FirstOrDefaultAsync(p => p.Id == cartItem.ProductId);
 
-                    if(product != null)
+                    if (product != null)
                     {
                         cartItem.Product = product;
                     }
@@ -58,9 +59,9 @@ namespace WorldDominion.Controllers
         //This Async function actually adds the items into the cart 
         //To access this we need to send a http request
         [HttpPost] //This is a http declarator and it tells the action which type of method to be used to access it.
-        public async Task<IActionResult> AddToCart (int productId, int quantity)
+        public async Task<IActionResult> AddToCart(int productId, int quantity)
         {
-            var cart = GetCart();
+            var cart = _cartService.GetCart();
 
             if (cart == null)
             {
@@ -82,33 +83,35 @@ namespace WorldDominion.Controllers
                     return NotFound();
                 }
 
-                cartItem = new CartItem {ProductId = productId, Quantity = quantity, Product = product};
+                cartItem = new CartItem { ProductId = productId, Quantity = quantity, Product = product };
                 cart.CartItems.Add(cartItem);
             }
 
-            SaveCart(cart);
+            _cartService.SaveCart(cart);
 
             return RedirectToAction("Index");
         }
 
-        //If we have a cart already on our session, it will return it an di fwe don't it will create a new one
-        //No matter what, it will return a cart
-        private Cart? GetCart()
+        [HttpPost]
+        public IActionResult RemoveFromCart(int productId)
         {
-            //Anything stored in a session is a string and the following command will get back the value as a string 
-            //If you want to store an object, we need to convert it to the object
-            var cartJson = HttpContext.Session.GetString(_cartSessionKey);
+            var cart = _cartService.GetCart();
 
-            return cartJson == null ? new Cart() : JsonConvert.DeserializeObject<Cart>(cartJson);
-            //If cartJson is null then return a new cart else convert the string you found by calling DeserializeObject, DeserializeObject into a cart (cartJson is where you gonna pull it from); 
-        }
+            if(cart == null)
+            {
+                return NotFound();
+            }
 
-        //Save the cart to the session key
-        private void SaveCart(Cart cart)
-        {
-            var cartJson = JsonConvert.SerializeObject(cart);
+            var cartItem = cart.CartItems.Find(cartItem => cartItem.ProductId == productId);
+            
+            if(cartItem != null)
+            {
+                cart.CartItems.Remove(cartItem);
 
-            HttpContext.Session.SetString(_cartSessionKey, cartJson);
+                _cartService.SaveCart(cart);
+            }
+
+            return RedirectToAction("Index");
         }
     }
 }
