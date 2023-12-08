@@ -43,6 +43,8 @@ builder.Services.AddAuthentication().AddGoogle(options => {
 
 builder.Services.AddScoped<CartService>();
 
+builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
 var app = builder.Build();
 
 //Enable sessions on our requests

@@ -23,7 +23,7 @@ namespace WorldDominion.Models
         //This will store the user when we actually retrieve an order
         //So if we want to retrieve the user information we can
         // [ForeignKey("UserId")]
-        public IdentityUser User {get; set; } = new IdentityUser();
+        public IdentityUser? User {get; set; }
 
         //This will store the snapshot of the products
         //This will help us to store all the order items that is associated with the order

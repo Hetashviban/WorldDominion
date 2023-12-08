@@ -15,7 +15,7 @@ namespace WorldDominion.Models
         public DbSet<Department> Departments { get; set; }
         //The above line is the association between the department model and the department table
         public DbSet<Product> Products { get; set; }        
-        public DbSet<Order> Order { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
     }
 }

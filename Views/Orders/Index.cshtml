@@ -1,0 +1,30 @@
+@{
+    ViewData["Title"] = "Completed Orders";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach(var order in Model)
+            {
+                <tr>
+                    <td>@order.Id</td>
+                    <td>@order.Total</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@order.Id">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

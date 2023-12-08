@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using WorldDominion.Models;
 using Newtonsoft.Json;
+
 namespace WorldDominion.Services
 {
     public class CartService
@@ -33,6 +34,11 @@ namespace WorldDominion.Services
             var cartJson = JsonConvert.SerializeObject(cart);
 
             _httpContextAccessor.HttpContext.Session.SetString(_cartSessionKey, cartJson);
+        }
+
+        public void DestroyCart()
+        {
+            _httpContextAccessor.HttpContext.Session.Remove(_cartSessionKey);
         }
     }
 }
