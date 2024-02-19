@@ -33,12 +33,10 @@ namespace WorldDominion.Models
         [StringLength(1000)]
         public string? Description { get; set;} = String.Empty;
 
-        [StringLength(1000)]
         //Why are we storing an Image as a string? It's because when we do images we are going to write the image to a directory and then 
         //we are going to write the path of that directory and the info about the image to the database in a field called image
         //This is restrictive as we are only allowed to have only one image 
         //If we want two images -- we would have to create a different kind of model for that 
-        public string? Image { get; set;} = String.Empty;
 
         [Required]
         [Range(0.01, 999999.99)]

@@ -6,55 +6,33 @@
 
 <h1>@ViewData["Title"]</h1>
 
-@if (Model.CartItems != null)
+@if (Model.CartItems != null && Model.CartItems.Any())
 {
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Subtotal</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @foreach(var cartItem in Model.CartItems)
-            {
-                <tr>
-                    <td>@cartItem.Product.Name</td>
-                    <td>@cartItem.Quantity</td>
-                    <td>@cartItem.Product.MSRP</td>
-                    <td>
-                        @((decimal)(cartItem.Quantity * cartItem.Product.MSRP))
-                    </td>
-                    <td>
-                        <form asp-action="RemoveFromCart">
-                            <input type="hidden" name="productId" asp-for="@cartItem.ProductId"/>
-                            <input type="submit" value="Remove" class="btn btn-danger">
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-
-        <tfoot>
-            <tr>
-                <th>Total</th>
-                <td colspan="4">
-                    @(Model.CartItems.Sum(cartItem => (decimal)(cartItem.Quantity * cartItem.Product.MSRP)))
-                </td>
-            </tr>
-        </tfoot>
-    </table>
+    <div class="cart-container">
+        @foreach(var cartItem in Model.CartItems)
+        {
+            <div class="cart-item">
+                <h3>@cartItem.Product.Name</h3>
+                <p>Quantity: @cartItem.Quantity</p>
+                <p>Price: $@cartItem.Product.MSRP</p>
+                <p>Subtotal: $@(cartItem.Quantity * cartItem.Product.MSRP)</p>
+                <form asp-action="RemoveFromCart">
+                    <input type="hidden" name="productId" value="@cartItem.ProductId"/>
+                    <input type="submit" value="Remove" class="btn btn-danger">
+                </form>
+            </div>
+        }
+        <div class="cart-summary">
+            <h2>Total</h2>
+            <p>$@(Model.CartItems.Sum(cartItem => (decimal)(cartItem.Quantity * cartItem.Product.MSRP)))</p>
+            <a class="btn btn-success" asp-controller="Orders" asp-action="Checkout">Checkout</a>
+        </div>
+    </div>
 }
-
-<!--Added the checkout button
-The button will only be visible if there are any items in the cart-->
-@if (Model.CartItems.Count > 0)
+else
 {
-    <a class="btn btn-success" asp-controller="Orders" asp-action="Checkout">
-        Checkout
-    </a>
+    <div class="empty-cart">
+        <p>Your cart is empty.</p>
+        <a class="btn btn-primary" href="@Url.Action("Index", "Products")">Shop Now</a>
+    </div>
 }

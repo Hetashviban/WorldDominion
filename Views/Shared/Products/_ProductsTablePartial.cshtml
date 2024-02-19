@@ -1,62 +1,35 @@
 @model IEnumerable<WorldDominion.Models.Product>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Image)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MSRP)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Department)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Image)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.MSRP)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Department.Name)
-                </td>
-                <td>
-                    <form asp-controller="Carts" asp-action="AddToCart">
-                        <input type="hidden" name="productId" value="@item.Id">
-                        <input type="hidden" name="quantity" value="1">
-                        <input type="submit" value="Quick Add to Cart" class="btn btn-success">
-                    </form>
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+@{
+    var departments = Model.Select(p => p.Department.Name).Distinct();
+}
 
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <span>&nbsp; | &nbsp;</span>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
-                        <span>&nbsp; | &nbsp;</span>
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    }
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+@foreach (var department in departments)
+{
+    <div class="department-section">
+        <h2>@department</h2>
+        <div class="product-container">
+            @foreach (var item in Model.Where(p => p.Department.Name == department))
+            {
+                <div class="product-card">
+                    <div class="product-content">
+                        <h3 class="product-title">@Html.DisplayFor(modelItem => item.Name)</h3>
+                        <p class="product-description">@Html.DisplayFor(modelItem => item.Description)</p>
+                        <p class="product-price">MSRP: @Html.DisplayFor(modelItem => item.MSRP)</p>
+                        <form asp-controller="Carts" asp-action="AddToCart">
+                            <input type="hidden" name="productId" value="@item.Id">
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="submit" value="Quick Add to Cart" class="add-to-cart-btn">
+                        </form>
+                        <a href="@Url.Action("Details", "Products", new { id = item.Id })" class="details-link">Details</a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a href="@Url.Action("Edit", "Products", new { id = item.Id })" class="edit-link">Edit</a>
+                            <a href="@Url.Action("Delete", "Products", new { id = item.Id })" class="delete-link">Delete</a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
