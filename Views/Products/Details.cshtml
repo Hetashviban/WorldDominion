@@ -36,7 +36,7 @@
         </dd>
     </dl>
 </div>
-<div>
+<div class="product-details">
 
     <form asp-controller="Carts" asp-action="AddToCart">
         <input type="hidden" name="productId" value="@Model.Id">
@@ -46,8 +46,8 @@
 
     @if (User.IsInRole("Admin"))
     {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <a asp-action="Edit" class="edit" asp-route-id="@Model?.Id">Edit</a>
         <span>&nbsp; | &nbsp;</span>
-        <a asp-action="Index">Back to List</a>
+        <a asp-action="Index" class="back">Back to List</a>
     }
 </div>

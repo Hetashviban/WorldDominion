@@ -1,6 +1,6 @@
 @model List<MenuItem>
 
-<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm">
     <div class="container-fluid">
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/assets/logo.png" alt="my logo"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
@@ -12,14 +12,14 @@
                 @foreach (var menuItem in Model) 
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="@menuItem.Controller" asp-action="@menuItem.Action">@menuItem.Label</a>
+                        <a class="nav-link text-light" asp-controller="@menuItem.Controller" asp-action="@menuItem.Action">@menuItem.Label</a>
                     </li>
                 }
 
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
-                        <a class="nav-link text-dark" asp-controller="Orders" asp-action="Index">Orders</a>
+                        <a class="nav-link text-light" asp-controller="Orders" asp-action="Index">Orders</a>
                     </li>
                 }
             </ul>
@@ -28,12 +28,12 @@
                 @if (User.Identity.IsAuthenticated)
                 {
                     <li class="nav-item">
-                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="nav-link text-dark">
+                        <a asp-area="Identity" asp-page="/Account/Manage/Index" class="nav-link text-light">
                             Hello @User.Identity.Name!
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a asp-area="Identity" asp-page="/Account/Logout" class="nav-link text-dark"> 
+                        <a asp-area="Identity" asp-page="/Account/Logout" class="nav-link text-light"> 
                         Logout
                         </a>
                     </li>
@@ -41,12 +41,12 @@
                 else 
                 {
                     <li class="nav-item">
-                        <a asp-area="Identity" asp-page="/Account/Register" class="nav-link text-dark">
+                        <a asp-area="Identity" asp-page="/Account/Register" class="nav-link text-light">
                         Register
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a asp-area="Identity" asp-page="/Account/Login" class="nav-link text-dark">
+                        <a asp-area="Identity" asp-page="/Account/Login" class="nav-link text-light">
                         Login
                         </a>
                     </li>
