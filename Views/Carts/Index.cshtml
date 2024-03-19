@@ -9,19 +9,34 @@
 @if (Model.CartItems != null && Model.CartItems.Any())
 {
     <div class="cart-container">
-        @foreach(var cartItem in Model.CartItems)
-        {
-            <div class="cart-item">
-                <h3>@cartItem.Product.Name</h3>
-                <p>Quantity: @cartItem.Quantity</p>
-                <p>Price: $@cartItem.Product.MSRP</p>
-                <p>Subtotal: $@(cartItem.Quantity * cartItem.Product.MSRP)</p>
-                <form asp-action="RemoveFromCart">
-                    <input type="hidden" name="productId" value="@cartItem.ProductId"/>
-                    <input type="submit" value="Remove" class="btn btn-danger">
-                </form>
-            </div>
-        }
+        <table class="cart-items-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var cartItem in Model.CartItems)
+                {
+                    <tr>
+                        <td>@cartItem.Product.Name</td>
+                        <td>@cartItem.Quantity</td>
+                        <td>$@cartItem.Product.MSRP</td>
+                        <td>$@(cartItem.Quantity * cartItem.Product.MSRP)</td>
+                        <td>
+                            <form asp-action="RemoveFromCart">
+                                <input type="hidden" name="productId" value="@cartItem.ProductId"/>
+                                <input type="submit" value="Remove" class="btn btn-danger">
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
         <div class="cart-summary">
             <h2>Total</h2>
             <p>$@(Model.CartItems.Sum(cartItem => (decimal)(cartItem.Quantity * cartItem.Product.MSRP)))</p>
@@ -32,7 +47,7 @@
 else
 {
     <div class="empty-cart">
-        <p>Your cart is empty.</p>
+        <h3>Your cart is empty.</h3>
         <a class="btn btn-primary" href="@Url.Action("Index", "Products")">Shop Now</a>
     </div>
 }

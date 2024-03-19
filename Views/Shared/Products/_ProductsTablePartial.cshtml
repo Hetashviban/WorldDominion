@@ -13,7 +13,10 @@
             {
                 <div class="product-card">
                     <div class="product-content">
-                        <h3 class="product-title">@Html.DisplayFor(modelItem => item.Name)</h3>
+                        <div class="heading">
+                            <h3 class="product-title">@Html.DisplayFor(modelItem => item.Name)</h3>
+                            <a href="@Url.Action("Details", "Products", new { id = item.Id })" class="details-link">Details</a>
+                        </div>
                         <p class="product-description">@Html.DisplayFor(modelItem => item.Description)</p>
                         <p class="product-price">MSRP: @Html.DisplayFor(modelItem => item.MSRP)</p>
                         <form asp-controller="Carts" asp-action="AddToCart">
@@ -21,7 +24,6 @@
                             <input type="hidden" name="quantity" value="1">
                             <input type="submit" value="Quick Add to Cart" class="add-to-cart-btn">
                         </form>
-                        <a href="@Url.Action("Details", "Products", new { id = item.Id })" class="details-link">Details</a>
                         @if (User.IsInRole("Admin"))
                         {
                             <a href="@Url.Action("Edit", "Products", new { id = item.Id })" class="edit-link">Edit</a>
