@@ -119,7 +119,7 @@ namespace WorldDominion.Controllers
                     {
                         PriceData = new SessionLineItemPriceDataOptions
                         {
-                            UnitAmount = (long)order.Total * 100,
+                            UnitAmount = (long)(order.Total * 100),
                             Currency = "cad",
                             ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
@@ -134,8 +134,8 @@ namespace WorldDominion.Controllers
                     "card"
                 },
                 Mode = "payment",
-                SuccessUrl = "https://" + Request.Host + "/Orders/SaveOrder",
-                CancelUrl = "https://" + Request.Host + "/Carts/ViewMyCart"
+                SuccessUrl = "http://" + Request.Host + "/Orders/SaveOrder",
+                CancelUrl = "http://" + Request.Host + "/Carts/ViewMyCart"
             };
 
             var service = new SessionService();

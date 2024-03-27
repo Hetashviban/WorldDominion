@@ -44,10 +44,12 @@
         <input type="submit" value="Add to Cart" class="btn btn-success">
     </form>
 
-    @if (User.IsInRole("Admin"))
-    {
-        <a asp-action="Edit" class="edit" asp-route-id="@Model?.Id">Edit</a>
-        <span>&nbsp; | &nbsp;</span>
-        <a asp-action="Index" class="back">Back to List</a>
-    }
+    <div class="details-button">
+        @if (User.IsInRole("Admin"))
+        {
+            <a asp-action="Edit" class="edit" asp-route-id="@Model?.Id">Edit</a>
+            <span>&nbsp; | &nbsp;</span>
+            <a asp-action="Index" class="back">Back to List</a>
+        }
+    </div>
 </div>
