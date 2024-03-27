@@ -1,113 +1,47 @@
-# ASP.NET MVC Project Setup in VSCode
+# 🛒 WorldDominion Grocery: ASP.NET MVC E-commerce Website
 
-Follow this guide to create a new ASP.NET MVC project using VSCode. We'll also use the ASPNET CodeGenerator package and configure the Entity Framework to use MySQL.
+A grocery store e-commerce website created using ASP.NET MVC. This project replicates basic functionalities of an e-commerce platform tailored for a grocery store, including product listings, cart management, user authentication, and checkout process.
 
-## Prerequisites
+## Technologies:
 
-- [VSCode](https://code.visualstudio.com/)
-- [.NET SDK](https://dotnet.microsoft.com/download)
-- MySQL Server installed and running
+- `ASP.NET MVC`
+- `C#`
+- `HTML`
+- `CSS`
+- `JavaScript`
+- `Stripe API`
+- `Google OAuth API`
 
-## Steps
+## Features:
 
-### 1. Initialize a New Project
+Here are the key features of the WorldDominion Grocery website:
 
-Open your terminal and create a new directory for your project. Navigate into it and run the following command to create a new ASP.NET MVC project:
+- **Authentication and Authorization**: Users can register, log in, and access personalized features such as order history and saved addresses. Admin accounts have additional privileges for managing products and orders.
+- **Checkout Process**: Seamless checkout process with options for entering shipping details, selecting delivery options, and making payments.
+- **Payment Process using Stripe**: Integrated Stripe API for secure and convenient payment processing, supporting various payment methods including credit/debit cards.
+- **Responsive Design**: The website is responsive and adapts well to different screen sizes and devices, providing a consistent user experience.
+- **Add to Cart Functionality**: Users can add products to their cart, update quantities, and remove items as needed.
+- **Cart Functionality**: Manage the shopping cart with features like viewing cart items, subtotal calculation, and clearing the cart.
+- **Google Authentication**: Users can sign in using their Google accounts for a streamlined authentication process.
 
-```bash
-dotnet new mvc -o NameOfMyProject
-dotnet dev-certs https --trust
-```
 
-### 2. Add MySQL Entity Framework Package
+## How can it be improved?
 
-Add the NuGet package for Entity Framework Core MySQL provider.
+Here are some areas for potential improvement and additional features:
 
-```bash
-dotnet tool uninstall --global dotnet-ef
-dotnet tool install --global dotnet-ef
-dotnet add package Microsoft.EntityFrameworkCore.Design
-dotnet add package Microsoft.EntityFrameworkCore.SQLite
-dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
-dotnet add package Microsoft.EntityFrameworkCore.SqlServer
-dotnet add package Microsoft.EntityFrameworkCore.Tools
-dotnet add package MySql.EntityFrameworkCore --version 7.0.2
-```
+- **Product Search and Filtering**: Implement search functionality and advanced filters to enhance product discovery and browsing.
+- **Recommendation System**: Integrate a recommendation engine to suggest relevant products based on user preferences and purchase history.
+- **Inventory Management**: Enhance inventory tracking and management to ensure accurate product availability updates and notifications.
+- **Order Tracking**: Provide order tracking features for users to monitor the status of their orders and expected delivery dates.
+- **Responsive Design Enhancements**: Continuously optimize and refine the responsive design for better usability on various devices and screen sizes.
 
-### 3. Add ASPNET CodeGenerator
+## Running the Project
 
-Install the ASPNET CodeGenerator package:
+To run the project locally, follow these steps:
 
-```bash
-dotnet tool uninstall --global dotnet-aspnet-codegenerator
-dotnet tool install --global dotnet-aspnet-codegenerator
-
-```
-
-### 4. Create Models
-
-Create your model classes in the `Models` folder, using the code generator:
-```bash
-dotnet aspnet-codegenerator model -n Department -o Models
-```
-
-### 5. Add DbContext
-
-Create a new folder called **Data**. In the folder create a new file called **ApplicationDbContext.cs**. Add the following to the file:
-```csharp
-using Microsoft.EntityFrameworkCore;
-
-namespace WorldDominion.Models
-{
-    public class ApplicationDbContext : DbContext
-    {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-        }
-        
-        // Change to be your model(s) and table(s)
-        public DbSet<ModelName> TableName { get; set; }
-    }
-}
-```
-
-In the Program.cs file, add the following line, after the **"// Add services to the container."** comment:
-```csharp
-// Add MySQL
-var connectionString = builder.Configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string not found.");
-
-builder.Services.AddDbContext<ApplicationDbContext>(options => 
-    options.UseMySQL(connectionString));
-```
-
-### 6. Scaffold Controllers and Views
-
-Using the terminal, run the following command to scaffold controllers and views:
-
-```bash
-dotnet aspnet-codegenerator controller -name [ControllerName] -m [ModelName] -dc [DbContextName] --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
-```
-
-Replace `[ControllerName]`, `[ModelName]`, and `[DbContextName]` with appropriate names.
-
-### 7. Run Migrations
-
-Initialize a new migration:
-
-```bash
-dotnet ef migrations add InitialMigration
-```
-
-Apply the migration to the database:
-
-```bash
-dotnet ef database update
-```
-
-### 8. Run the Project
-
-Run your project to make sure everything works:
-
-```bash
-dotnet run
-```
+1. Clone the repository to your local machine.
+2. Open the project in Visual Studio.
+3. Set the `WorldDominion.Web` project as the startup project.
+4. Configure the Stripe API keys and Google OAuth credentials in the appropriate configuration files.
+5. Build and run the project in debug mode.
+6. Access the website through your web browser using the specified local address.
