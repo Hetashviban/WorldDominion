@@ -39,7 +39,3 @@ Here are some areas for potential improvement and additional features:
 - **Recommendation System**: Integrate a recommendation engine to suggest relevant products based on user preferences and purchase history.
   
 - **Inventory Management**: Enhance inventory tracking and management to ensure accurate product availability updates and notifications.
-  
-- **Order Tracking**: Provide order tracking features for users to monitor the status of their orders and expected delivery dates.
-  
-- **Responsive Design Enhancements**: Continuously optimize and refine the responsive design for better usability on various devices and screen sizes.
